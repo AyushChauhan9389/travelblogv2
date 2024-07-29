@@ -56,14 +56,14 @@ export async function POST(req: Request) {
     const { id } = evt.data;
     const eventType = evt.type;
     if (evt.type === 'user.created') {
-        if(typeof evt.data.username !== 'string') return;
+        if(typeof evt.data.username !== 'string') return new Response('username not there', { status: 555 }) ;
         await db.insert(users).values({userId: evt.data.id, email: evt.data.email_addresses[0].email_address, roleId: 3, username: evt.data.username})
         console.log("Created")
     }else if (evt.type == 'user.deleted') {
         if (typeof evt.data.id !== 'string') return ;  // Ensure evt.data.id is a string
         await db.delete(users).where(eq(users.userId, evt.data.id));
         console.log("Deleted");
-    }else return;
+    }else return new Response('db req fail', { status: 556 });
 
     return new Response('', { status: 200 })
 }
