@@ -5,12 +5,6 @@ import {db} from "@/app/db/db";
 import {users} from "@/app/db/schema";
 import {eq} from "drizzle-orm";
 
-export async function GET(req: Request) {
-    return new Response('Error occured', {
-        status: 400
-    })
-}
-
 
 export async function POST(req: Request) {
 
@@ -63,7 +57,7 @@ export async function POST(req: Request) {
     const eventType = evt.type;
     if (evt.type === 'user.created') {
         if(typeof evt.data.username !== 'string') return;
-        await db.insert(users).values({userId: evt.data.id, email: evt.data.email_addresses[0].email_address, roleId: 2, username: evt.data.username})
+        await db.insert(users).values({userId: evt.data.id, email: evt.data.email_addresses[0].email_address, roleId: 3, username: evt.data.username})
         console.log("Created")
     }else if (evt.type == 'user.deleted') {
         if (typeof evt.data.id !== 'string') return ;  // Ensure evt.data.id is a string
