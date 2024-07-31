@@ -7,7 +7,6 @@ import {ChevronRightIcon} from "lucide-react";
 export default function Home() {
     return (
         <>
-        <Header />
             <main className="px-6 py-8 h-fit">
                 <div className="flex md:flex-row gap-4 flex-col">
                     <div className="md:w-2/3 w-full text-white  bg-cover bg-no-repeat relative h-[600px]">

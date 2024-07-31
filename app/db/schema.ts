@@ -22,20 +22,19 @@ export const roles = pgTable('roles', {
     roleId: serial('roleId').primaryKey(),
     roleName: text('roleName').notNull()
 });
-
 export const posts = pgTable('posts', {
     id: serial('id').primaryKey(),
     title: text('title').notNull(),
-    slug: varchar('slug', { length: 255 }).notNull(),
+    slug: varchar('slug', { length: 255 }).notNull().unique(),
     content: text('content').notNull(),
+    headerimageurl: text('headerimageurl').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    ispublished: boolean('ispublished').notNull().default(false),
     isfeatured: boolean('isfeatured').notNull().default(false),
     authorId: integer('author_id').references(() => users.id).notNull(),
     categoryId: integer('category_id').references(() => categories.id).notNull()
-}, (table) => ({
-    slugIndex: uniqueIndex('posts_slug_idx').on(table.slug)
-}));
+});
 
 export const categories = pgTable('categories', {
     id: serial('id').primaryKey(),
