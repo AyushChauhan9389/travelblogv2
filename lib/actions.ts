@@ -1,12 +1,13 @@
 "use server";
 
-import {blogschema} from "@/lib/zodschema";
+import {blogschema, commentschema, saveblogschema} from "@/lib/zodschema";
 import {actionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
 import {currentUser} from "@clerk/nextjs/server";
 import {eq} from "drizzle-orm";
 import {db} from "@/app/db/db";
-import {posts, users} from "@/app/db/schema";
+import {comments, posts, users} from "@/app/db/schema";
+
 
 export async function getUserIdAction() {
     try {
@@ -19,6 +20,22 @@ export async function getUserIdAction() {
         return new error("Failed to get user id")
     }
 }
+export const createcomment = actionClient.schema(commentschema).action(async ({ parsedInput: { comment,postId } }) => {
+    try {
+        const userid = await getUserIdAction()
+        await db.insert(comments).values({
+            content: comment,
+            userId: userid,
+            postId: postId
+        })
+        revalidatePath(`/blog/${postId}`)
+        return {
+            success: 'Added Successfully',
+        };
+    }catch (error: any) {
+        return {failure: "Incorrect credentials"};
+    }
+});
 export const createBlogAction = actionClient
     .schema(blogschema)
     .action(async ({ parsedInput: { title, slug, content, headerimageurl } }) => {
@@ -41,3 +58,35 @@ export const createBlogAction = actionClient
             return { failure: "Incorrect credentials" };
         }
     });
+
+export const saveBlogAction = actionClient
+    .schema(saveblogschema)
+    .action(async ({ parsedInput: { title, slug, content, headerimageurl,blogid } }) => {
+        try {
+            const userid = await getUserIdAction()
+            if (headerimageurl){
+                await db.update(posts)
+                    .set({
+                        title: title,
+                        content: content,
+                        slug: slug,
+                        headerimageurl: headerimageurl
+                    })
+                    .where(eq(posts.id, blogid));
+            }else {
+                await db.update(posts)
+                    .set({
+                        title: title,
+                        content: content,
+                        slug: slug
+                    })
+                    .where(eq(posts.id, blogid));
+            }
+            return {
+                success: 'Saved Successfully',
+            };
+        }catch (error: any) {
+            return { failure: "Incorrect credentials" };
+        }
+    });
+

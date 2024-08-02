@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import {Bell, CircleUser, Home, LineChart, Menu, Package, Package2, Search, ShoppingCart, Users} from "lucide-react";
+import {
+    Bell,
+    ChartColumnStacked,
+    Home,
+    LineChart,
+    Menu,
+    Package2,
+    Search, Settings,
+} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {Badge} from "@/components/ui/badge";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
-import {
-    DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-const inter = Inter({ subsets: ["latin"] });
+import {UserButton} from "@clerk/nextjs";
+import {GoLocation} from "icons-react/all";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -43,43 +44,40 @@ export default function RootLayout({
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                             <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                                href="/dashboard"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
                             >
                                 <Home className="h-4 w-4"/>
-                                Dashboard
+                                All Posts
                             </Link>
                             <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                                href="/dashboard/category"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
                             >
-                                <ShoppingCart className="h-4 w-4"/>
-                                Orders
-                                <Badge
-                                    className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                    6
-                                </Badge>
+                                <ChartColumnStacked className="h-4 w-4"/>
+                                Request New Category
                             </Link>
                             <Link
                                 href="#"
-                                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                                className="flex items-center gap-3 rounded-lg  px-3 py-2 text-primary transition-all hover:text-primary hover:bg-muted"
                             >
-                                <Package className="h-4 w-4"/>
-                                Products{" "}
+                                <GoLocation className="h-4 w-4"/>
+                                Tags/Places
                             </Link>
                             <Link
                                 href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
                             >
-                                <Users className="h-4 w-4"/>
-                                Customers
+                                <Settings className="h-4 w-4"/>
+                                Settings
                             </Link>
                             <Link
                                 href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                                aria-disabled={true}
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
                             >
                                 <LineChart className="h-4 w-4"/>
-                                Analytics
+                                Analytics (Soon)
                             </Link>
                         </nav>
                     </div>
@@ -109,36 +107,32 @@ export default function RootLayout({
                                     <span className="sr-only">Travel Blog V2</span>
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/dashboard"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                                 >
                                     <Home className="h-5 w-5"/>
-                                    Dashboard
+                                    All Blogs
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/dashboard/category"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                                 >
-                                    <ShoppingCart className="h-5 w-5"/>
-                                    Orders
-                                    <Badge
-                                        className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                        6
-                                    </Badge>
+                                    <ChartColumnStacked className="h-5 w-5"/>
+                                    Request New Category
                                 </Link>
                                 <Link
                                     href="#"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                                 >
-                                    <Package className="h-5 w-5"/>
-                                    Products
+                                    <GoLocation className="h-5 w-5"/>
+                                    Tags/Places
                                 </Link>
                                 <Link
                                     href="#"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                                 >
-                                    <Users className="h-5 w-5"/>
-                                    Customers
+                                    <Settings className="h-5 w-5"/>
+                                    Settings
                                 </Link>
                                 <Link
                                     href="#"
@@ -179,22 +173,7 @@ export default function RootLayout({
 
                         </form>
                     </div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="secondary" size="icon" className="rounded-full">
-                                <CircleUser className="h-5 w-5"/>
-                                <span className="sr-only">Toggle user menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator/>
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Support</DropdownMenuItem>
-                            <DropdownMenuSeparator/>
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <UserButton/>
                 </header>
                 {children}
             </div>

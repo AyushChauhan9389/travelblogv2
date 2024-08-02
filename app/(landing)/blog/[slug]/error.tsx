@@ -2,9 +2,8 @@
 
 export default function ErrorBlog(){
     return(
-        <div>
-            <h1>404</h1>
-            <h2>Page not found</h2>
+        <div className="px-6 py-4">
+            <h1>Blog not found</h1>
         </div>
     )
 }

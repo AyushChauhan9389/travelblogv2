@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer(){
     return (
-        <footer className=" sticky bottom-0 bg-muted py-6 w-full">
+        <footer className=" bg-muted py-6 w-full">
             <div className="container max-w-5xl flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
                 <div className="flex items-center gap-2">
                     <MountainIcon className="h-6 w-6"/>
