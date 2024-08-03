@@ -38,7 +38,7 @@ export const createcomment = actionClient.schema(commentschema).action(async ({ 
 });
 export const createBlogAction = actionClient
     .schema(blogschema)
-    .action(async ({ parsedInput: { title, slug, content, headerimageurl } }) => {
+    .action(async ({ parsedInput: { title, slug, content, headerimageurl, description,categoryid } }) => {
         try {
             const userid = await getUserIdAction()
             await db.insert(posts).values({
@@ -47,9 +47,10 @@ export const createBlogAction = actionClient
                 content: content,
                 headerimageurl: headerimageurl,
                 authorId: userid,
-                categoryId: 1,
+                categoryId: categoryid,
                 isfeatured: false,
-                ispublished: true
+                ispublished: true,
+                description: description
             })
             return {
                 success: 'Added Successfully',
@@ -61,7 +62,7 @@ export const createBlogAction = actionClient
 
 export const saveBlogAction = actionClient
     .schema(saveblogschema)
-    .action(async ({ parsedInput: { title, slug, content, headerimageurl,blogid } }) => {
+    .action(async ({ parsedInput: { title, slug, content, headerimageurl,blogid,description,categoryid } }) => {
         try {
             const userid = await getUserIdAction()
             if (headerimageurl){
@@ -70,7 +71,9 @@ export const saveBlogAction = actionClient
                         title: title,
                         content: content,
                         slug: slug,
-                        headerimageurl: headerimageurl
+                        headerimageurl: headerimageurl,
+                        description: description,
+                        categoryId: categoryid
                     })
                     .where(eq(posts.id, blogid));
             }else {
@@ -78,7 +81,9 @@ export const saveBlogAction = actionClient
                     .set({
                         title: title,
                         content: content,
-                        slug: slug
+                        slug: slug,
+                        description: description,
+                        categoryId: categoryid
                     })
                     .where(eq(posts.id, blogid));
             }

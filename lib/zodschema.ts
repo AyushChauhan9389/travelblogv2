@@ -13,13 +13,18 @@ export const blogschema = z.object({
     headerimageurl: z.string(),
     slug: z.string(),
     content: z.string(),
+    description: z.string(),
+    categoryid: z.number()
 })
 export const saveblogschema = z.object({
     title: z.string(),
     headerimageurl: z.string().optional(),
     slug: z.string(),
     content: z.string(),
-    blogid: z.number()
+    blogid: z.number(),
+    description: z.string(),
+    categoryid: z.number()
+
 })
 
 export const commentschema = z.object({

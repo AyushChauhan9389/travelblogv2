@@ -37,7 +37,7 @@ export default async function Dashboard({searchParams}: { searchParams:{[key: st
     const per_page_options = Number(per_page)
     const start = (Number(page) - 1) * Number(per_page);
     const end = start + Number(per_page);
-
+    const url ='/dashboard'
     return (
         <main className="px-6 py-4">
             <div className="flex flex-row justify-between items-center">
@@ -62,7 +62,7 @@ export default async function Dashboard({searchParams}: { searchParams:{[key: st
             </div>
             <div className="mt-4">
                                 <Suspense fallback={<SkeletonFetchPost/>}>
-                                    <Fetchposts pagedata={start} per_pagedata={per_page_options} dataend={end}/>
+                                    <Fetchposts pagedata={start} per_pagedata={per_page_options} dataend={end} url={url}/>
                                 </Suspense>
             </div>
         </main>

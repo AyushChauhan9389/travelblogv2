@@ -26,6 +26,7 @@ export const posts = pgTable('posts', {
     id: serial('id').primaryKey(),
     title: text('title').notNull(),
     slug: varchar('slug', { length: 255 }).notNull().unique(),
+    description: text('description').notNull().default('Test Description'),
     content: text('content').notNull(),
     headerimageurl: text('headerimageurl').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),

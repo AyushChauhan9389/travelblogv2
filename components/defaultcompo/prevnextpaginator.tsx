@@ -8,12 +8,14 @@ import {Button} from "@/components/ui/button";
 
 interface PaginationprevControlsProps {
     hasPrevPage: boolean
+    url: string
 }
 interface PaginationnextControlsProps {
     hasNextPage: boolean
+    url: string
 }
 
-export function PrevButton({hasPrevPage}: PaginationprevControlsProps){
+export function PrevButton({hasPrevPage, url}: PaginationprevControlsProps){
     const router = useRouter()
     const searchParams = useSearchParams()
 
@@ -24,7 +26,7 @@ export function PrevButton({hasPrevPage}: PaginationprevControlsProps){
         <PaginationItem>
             <Button variant="outline" className={`cursor-pointer block ${!hasPrevPage ? 'hidden' : ''}`}
             onClick={() => {
-                router.push(`/dashboard/?page=${Number(page) - 1}`)
+                router.push(`${url}/?page=${Number(page) - 1}`)
             }}
             >
                 Previous
@@ -32,7 +34,7 @@ export function PrevButton({hasPrevPage}: PaginationprevControlsProps){
         </PaginationItem>
     )
 }
-export function NextButton({hasNextPage}: PaginationnextControlsProps){
+export function NextButton({hasNextPage, url}: PaginationnextControlsProps){
     const router = useRouter()
     const searchParams = useSearchParams()
 
@@ -44,7 +46,7 @@ export function NextButton({hasNextPage}: PaginationnextControlsProps){
             <Button variant="outline" className={`cursor-pointer block ${!hasNextPage ? 'hidden' : ''}`}
                             disabled={!hasNextPage}
                                 onClick={() => {
-                                    router.push(`/dashboard/?page=${Number(page) + 1}`)
+                                    router.push(`${url}/?page=${Number(page) + 1}`)
                                 }}
             >
                 Next
