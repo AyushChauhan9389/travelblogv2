@@ -125,7 +125,7 @@ export async function Fetchposts( {pagedata, per_pagedata, dataend, url}: pagina
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
-                        <Suspense fallback={<SkeletonFetchPost/>}>
+                        <Suspense fallback={<SkeleFetch />}>
                             <Fetchdata pagedata={pagedata} per_pagedata={per_pagedata} url={url}/>
                         </Suspense>
                     </Table>
@@ -243,6 +243,34 @@ export async function Fetchdata({pagedata, per_pagedata, url}: fetchdata){
                     </TableCell>
                 </TableRow>
             ))}
+        </TableBody>
+    )
+}
+
+export function SkeleFetch(){
+    return(
+        <TableBody>
+                <TableRow >
+                    <TableCell className="font-medium">
+                        <Link href="#" className="hover:underline" prefetch={false}>
+                            <Skeleton className="w-[200px] h-[30px]"/>
+                        </Link>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell"><Skeleton className="w-[200px] h-[30px]"/></TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                        <Skeleton className="w-[200px] h-[30px]"/>
+                    </TableCell>
+                    <TableCell>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Skeleton className="w-[200px] h-[30px]"/>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <Skeleton className="w-[200px] h-[30px]"/>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </TableCell>
+                </TableRow>
         </TableBody>
     )
 }

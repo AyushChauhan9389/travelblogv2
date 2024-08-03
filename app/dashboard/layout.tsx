@@ -74,12 +74,14 @@ export default async function RootLayout({
                             </Link>
                         </nav>
                     </div>
-                    {isadmin && <div className="mt-auto p-4">
+                    {isadmin && <div className="mt-auto p-4 sticky bottom-4">
                         <Card x-chunk="dashboard-02-chunk-0">
                             <CardContent className="p-2">
-                                <Button size="sm" className="w-full">
-                                    Admin Dashboard
-                                </Button>
+                                <Link href='/admin'>
+                                    <Button size="sm" className="w-full">
+                                        Admin Dashboard
+                                    </Button>
+                                </Link>
                             </CardContent>
                         </Card>
                     </div>}

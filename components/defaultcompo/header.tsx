@@ -113,95 +113,46 @@ export default async function Header() {
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <div className="-mx-6 grid gap-6 bg-muted p-6">
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div
-                                            className="text-sm font-medium leading-none group-hover:underline">Analytics
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Upgrade your reporting with advanced analytics.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div
-                                            className="text-sm font-medium leading-none group-hover:underline">Developer
-                                            Tools
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Extend your application with our developer tools.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div className="text-sm font-medium leading-none group-hover:underline">
-                                            Security &amp; Compliance
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Keep your data secure with our security features.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div
-                                            className="text-sm font-medium leading-none group-hover:underline">Scalability
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Scale your application with our infrastructure.
-                                        </div>
-                                    </Link>
+                                    {cats.map((cat, index) => (
+                                        <Link href={`/category/${cat.id}`} className="group grid h-auto w-full justify-start gap-1"
+                                              prefetch={false} key={index}>
+                                            <div
+                                                className="text-sm font-medium leading-none group-hover:underline">{cat.name}
+                                            </div>
+                                            <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                                {cat.description}
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
                             </CollapsibleContent>
                         </Collapsible>
-                        <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
-                            Pricing
-                        </Link>
-                        <Collapsible className="grid gap-4">
+                        <Collapsible className="grid gap-4 mt-3">
                             <CollapsibleTrigger
                                 className="flex w-full items-center text-lg font-semibold [&[data-state=open]>svg]:rotate-90">
-                                Resources <ChevronRightIcon className="ml-auto h-5 w-5 transition-all"/>
+                                Author <ChevronRightIcon className="ml-auto h-5 w-5 transition-all"/>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <div className="-mx-6 grid gap-6 bg-muted p-6">
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div className="text-sm font-medium leading-none group-hover:underline">Blog
-                                            Posts
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Read our latest blog posts.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div className="text-sm font-medium leading-none group-hover:underline">Case
-                                            Studies
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Read our customer case studies.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div
-                                            className="text-sm font-medium leading-none group-hover:underline">Documentation
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Learn how to use our product.
-                                        </div>
-                                    </Link>
-                                    <Link href="#" className="group grid h-auto w-full justify-start gap-1"
-                                          prefetch={false}>
-                                        <div className="text-sm font-medium leading-none group-hover:underline">Help
-                                            Center
-                                        </div>
-                                        <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                            Get help with our product.
-                                        </div>
-                                    </Link>
+                                    {author.map((cat, index) => (
+                                        <Link href={`/author/${cat.id}`} className="group grid h-auto w-full justify-start gap-1"
+                                              prefetch={false} key={index}>
+                                            <div className="text-sm font-medium leading-none group-hover:underline">
+                                                {cat.username}
+                                            </div>
+                                            <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                                Read our latest blog posts.
+                                            </div>
+                                        </Link>
+                                    ))}
+
                                 </div>
                             </CollapsibleContent>
                         </Collapsible>
+
+                        <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
+                            Support
+                        </Link>
                     </div>
                 </SheetContent>
             </Sheet>
