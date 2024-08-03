@@ -13,6 +13,7 @@ import {Suspense} from "react";
 import {SignedIn, SignedOut} from "@clerk/nextjs";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import getuserid from "@/lib/getuserid";
 
 type SingleblogProps = {
     slug: string
@@ -103,6 +104,7 @@ export async function Singleblog({slug}: SingleblogProps) {
     async function getCommentName(userID: number) {
         const data = await db.select().from(users).where(eq(users.id, userID))
         return data[0].username
+        const userid = getuserid()
     }
 
     return (
@@ -170,7 +172,7 @@ export async function Singleblog({slug}: SingleblogProps) {
                                     </div>
                                     <div className="w-full">
                                     <SignedOut>
-                                        <div>
+                                        <div className="flex flex-row gap-4">
                                             <Link href="/sign-in">
                                                 <Button>Sign in to comment</Button>
                                             </Link>
@@ -179,9 +181,10 @@ export async function Singleblog({slug}: SingleblogProps) {
                                             </Link>
                                         </div>
                                     </SignedOut>
-                                        <SignedIn>
+                                    <SignedIn>
                                             <AddForm postId={blog[0].id}/>
-                                        </SignedIn>
+
+                                    </SignedIn>
                                     </div>
                                 </CardContent>
 
