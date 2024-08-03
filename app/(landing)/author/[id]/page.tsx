@@ -29,7 +29,7 @@ export default async function AutherPage({params}: { params: { id: number } }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {postbyusers.map((post,index) => (
                         <div className="bg-card rounded-lg overflow-hidden shadow-md transition hover:scale-[1.01] " key={index}>
-                            <Link href="#" prefetch={false}>
+                            <Link href={`/blog/${postbyusers[index].slug}`} prefetch={false}>
                                 <Image
                                     src={post.headerimageurl}
                                     alt="Post Thumbnail"
@@ -40,7 +40,9 @@ export default async function AutherPage({params}: { params: { id: number } }) {
                                 />
                                 <div className="p-4 flex flex-row justify-between">
                                     <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
-                                    <Button className="w-fit h-8  ">Read More</Button>
+                                    <Link href={`/blog/${postbyusers[index].slug}`}>
+                                        <Button className="w-fit h-8">Read More</Button>
+                                    </Link>
                                 </div>
                             </Link>
                         </div>
