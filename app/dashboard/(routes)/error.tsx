@@ -52,11 +52,9 @@ export default function Dashboarderror(){
                         <div>
                             <Pagination>
                                 <PaginationContent>
-                                    <PrevButton hasPrevPage={false}/>
                                         <PaginationItem>
                                             <PaginationLink href={`/dashboard`}>R</PaginationLink>
                                         </PaginationItem>
-                                    <NextButton hasNextPage={false}/>
                                 </PaginationContent>
                             </Pagination>
                         </div>
