@@ -10,6 +10,9 @@ import {eq} from "drizzle-orm";
 import {Skeleton} from "@/components/ui/skeleton";
 import {LoadingFallback, SuspenseImage} from "@/components/defaultcompo/SuspenseImage";
 import {Suspense} from "react";
+import {SignedIn, SignedOut} from "@clerk/nextjs";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
 
 type SingleblogProps = {
     slug: string
@@ -166,7 +169,19 @@ export async function Singleblog({slug}: SingleblogProps) {
                                         </ScrollArea>
                                     </div>
                                     <div className="w-full">
-                                    <AddForm postId={blog[0].id}/>
+                                    <SignedOut>
+                                        <div>
+                                            <Link href="/sign-in">
+                                                <Button>Sign in to comment</Button>
+                                            </Link>
+                                            <Link href="/sign-up">
+                                                <Button>Sign up to comment</Button>
+                                            </Link>
+                                        </div>
+                                    </SignedOut>
+                                        <SignedIn>
+                                            <AddForm postId={blog[0].id}/>
+                                        </SignedIn>
                                     </div>
                                 </CardContent>
 
