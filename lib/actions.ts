@@ -1,6 +1,6 @@
 "use server";
 
-import {blogschema, commentschema, saveblogschema} from "@/lib/zodschema";
+import {blogschema, commentschema, deletebtn, publisherschema, saveblogschema} from "@/lib/zodschema";
 import {actionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
 import {currentUser} from "@clerk/nextjs/server";
@@ -95,3 +95,35 @@ export const saveBlogAction = actionClient
         }
     });
 
+export const publishBlogAction = actionClient.schema(publisherschema).action(async ({ parsedInput: { ispublished, postId } }) => {
+    try {
+        const userid = await getUserIdAction()
+        await db.update(posts)
+            .set({
+                ispublished: ispublished
+            })
+            .where(eq(posts.id, postId));
+        revalidatePath(`/dashboard`)
+        return {
+            success: 'Published Successfully',
+        };
+    }catch (error: any) {
+        return { failure: "Incorrect credentials" };
+    }
+
+});
+
+export const DeleteBlogAction = actionClient.schema(deletebtn).action(async ({ parsedInput: { postId } }) => {
+    try {
+        const userid = await getUserIdAction()
+        await db.delete(comments).where(eq(comments.postId, postId))
+        await db.delete(posts).where(eq(posts.id, postId))
+        revalidatePath(`/dashboard`)
+        return {
+            success: 'Deleted Successfully',
+        };
+    }catch (error: any) {
+        return { failure: "Incorrect credentials" };
+    }
+
+});

@@ -31,3 +31,11 @@ export const commentschema = z.object({
     comment: z.string().min(1).max(255),
     postId: z.number()
 })
+
+export const publisherschema = z.object({
+    ispublished: z.boolean(),
+    postId: z.number()
+})
+export const deletebtn = z.object({
+    postId: z.number()
+})

@@ -1,7 +1,9 @@
+import {MainFetch} from "@/components/fetchcomponents/fetchposts";
+
 export default function BlogPage(){
     return(
         <div>
-            Hello Blog
+            <MainFetch />
         </div>
     )
 }

@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {MoveHorizontalIcon} from "lucide-react";
 import {categories, posts} from "@/app/db/schema";
 import {db} from "@/app/db/db";
-import {count, eq} from "drizzle-orm";
+import {and, count, eq} from "drizzle-orm";
 import getuserid from "@/lib/getuserid";
 import { Skeleton } from "@/components/ui/skeleton"
 import {Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis} from "@/components/ui/pagination";
@@ -15,6 +15,9 @@ import {PrevButton, NextButton} from "@/components/defaultcompo/prevnextpaginato
 import paginationItem from "@/components/defaultcompo/paginationItem";
 import PaginationItem1 from "@/components/defaultcompo/paginationItem";
 import {Suspense} from "react";
+import PublishData from "@/components/defaultcompo/PublishData";
+import DeleteBtn2 from "@/components/defaultcompo/DeleteData";
+import Image from "next/image";
 export async function SkeletonFetchPost(){
     return(
         <>
@@ -233,11 +236,11 @@ export async function Fetchdata({pagedata, per_pagedata, url}: fetchdata){
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Set to {userblogs[index].ispublished? 'published':'not published'}</DropdownMenuItem>
+                                <PublishData ispublished={userblogs[index].ispublished} postId={userblogs[index].id} />
                                 <Link href={`${url}/edit/${userblogs[index].id}`}>
                                     <DropdownMenuItem>Edit</DropdownMenuItem>
                                 </Link>
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                                <DeleteBtn2 postId={userblogs[index].id}/>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>
@@ -272,5 +275,75 @@ export function SkeleFetch(){
                     </TableCell>
                 </TableRow>
         </TableBody>
+    )
+}
+
+export async function MainFetch() {
+    const blogs = await db.select().from(posts).where(eq(posts.ispublished, true))
+    return (
+        <main className="container mx-auto py-12 px-4 md:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold mb-6">Latest Blog Posts</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {blogs.map((blog, index) => (
+                    <div key={index}
+                         className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <Link href={`/blog/${blogs[index].slug}`} prefetch={false}>
+                            <Image
+                                src={blogs[index].headerimageurl}
+                                alt={blogs[index].title}
+                                width={400}
+                                height={225}
+                                className="w-full h-48 object-cover"
+                                style={{aspectRatio: "400/225", objectFit: "cover"}}
+                            />
+                            <div className="p-4">
+                                <h3 className="text-lg font-bold text-card-foreground">
+                                    {blogs[index].title}
+                                </h3>
+                                <p className="text-card-foreground/80 mt-2 line-clamp-2">
+                                    {blogs[index].description}
+                                </p>
+                            </div>
+                        </Link>
+                    </div>
+                ))}
+            </div>
+        </main>
+    )
+}
+type fetchcategory = {
+    categoryid: number
+}
+export async function MainCategoryFetch({categoryid}: fetchcategory) {
+    const blogs = await db.select().from(posts).where(and(eq(posts.ispublished, true), eq(posts.categoryId, categoryid)))
+    return (
+        <main className="container mx-auto py-12 px-4 md:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold mb-6">Latest Blog Posts</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {blogs.map((blog, index) => (
+                    <div key={index}
+                         className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <Link href={`/blog/${blogs[index].slug}`} prefetch={false}>
+                            <Image
+                                src={blogs[index].headerimageurl}
+                                alt={blogs[index].title}
+                                width={400}
+                                height={225}
+                                className="w-full h-48 object-cover"
+                                style={{aspectRatio: "400/225", objectFit: "cover"}}
+                            />
+                            <div className="p-4">
+                                <h3 className="text-lg font-bold text-card-foreground">
+                                    {blogs[index].title}
+                                </h3>
+                                <p className="text-card-foreground/80 mt-2 line-clamp-2">
+                                    {blogs[index].description}
+                                </p>
+                            </div>
+                        </Link>
+                    </div>
+                ))}
+            </div>
+        </main>
     )
 }

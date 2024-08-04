@@ -7,6 +7,7 @@ import Link from "next/link";
 import {ArrowRight} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {eq} from "drizzle-orm";
+import {MainCategoryFetch} from "@/components/fetchcomponents/fetchposts";
 
 
 export default async function SingleCategoryPage({params}: { params: { id: number } }) {
@@ -29,7 +30,7 @@ export default async function SingleCategoryPage({params}: { params: { id: numbe
             </div>
             <div className="flex  flex-col md:flex-row px-2 py-4 gap-3 h-full">
                 <div className="w-4/5">
-                    hey
+                    <MainCategoryFetch  categoryid={singlecategory[0].id} />
                 </div>
                 <div className=" w-full md:w-1/5 bg-background flex flex-col gap-3">
                     <div className="flex flex-row justify-between">
