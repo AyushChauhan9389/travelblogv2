@@ -9,6 +9,7 @@ import {
     uniqueIndex,
     index, boolean
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
@@ -35,13 +36,31 @@ export const posts = pgTable('posts', {
     isfeatured: boolean('isfeatured').notNull().default(false),
     authorId: integer('author_id').references(() => users.id).notNull(),
     categoryId: integer('category_id').references(() => categories.id).notNull()
-});
+},
+    (table) => ({
+        searchIndex: index('search_index').using(
+            'gin',
+            sql`(
+          setweight(to_tsvector('english', ${table.title}), 'A') ||
+          setweight(to_tsvector('english', ${table.description}), 'B')
+      )`,
+        ),
+    }));
 
 export const categories = pgTable('categories', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     description: text('description')
-});
+},
+    (table) => ({
+        searchIndex: index('search_index').using(
+            'gin',
+            sql`(
+          setweight(to_tsvector('english', ${table.name}), 'A') ||
+          setweight(to_tsvector('english', ${table.description}), 'B')
+      )`,
+        ),
+    }));
 
 export const tags = pgTable('tags', {
     id: serial('id').primaryKey(),
