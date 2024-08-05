@@ -4,46 +4,50 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {db} from "@/app/db/db";
 import {count} from "drizzle-orm";
 import {posts, users} from "@/app/db/schema";
+import { Button } from "@/components/ui/button";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import DeleteBtn3 from "@/components/defaultcompo/DeleteCat";
+import DeleteBtn2 from "@/components/defaultcompo/DeleteData";
 
 export default async function AdminPage(){
     const isAdmin = await adminControl()
     const toalpages = await db.select({ count: count() }).from(posts)
-    const totalusers = await db.select({ count: count() }).from(users)
+    const totalblogs =  await db.select().from(posts)
     if(!isAdmin){
         throw error
     }
+
     return (
-        <div className="flex flex-col sm:gap-4 sm:py-4">
-            <main className="container grid gap-4 px-4 py-6 sm:grid-cols-2 lg:grid-cols-3 sm:px-6 sm:py-8">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Total Posts</CardTitle>
-                        <CardDescription>All published blog posts</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-4xl font-bold">{toalpages[0].count}</div>
-                    </CardContent>
-                    <CardFooter>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>+12% from last month</span>
-                        </div>
-                    </CardFooter>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Total Users</CardTitle>
-                        <CardDescription>All registered users</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-4xl font-bold">{totalusers[0].count}</div>
-                    </CardContent>
-                    <CardFooter>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>+5% from last month</span>
-                        </div>
-                    </CardFooter>
-                </Card>
-            </main>
+        <>
+        <div className="my-4 text-2xl font-medium flex flex-row justify-between">
+        Posts
+        <Button variant="outline" className="ml-4">Add Category</Button>
         </div>
+        {totalblogs.map((blog, index) => (
+            <Card key={index} className="mb-4 group flex flex-row justify-between items-center h-14 px-6 shadow-md capitalize hover:scale-[1.001] transition">
+            {blog.title}
+            <div className="">
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="outline">Delete</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription className=" capitalize">
+                                This action cannot be undone. This will permanently delete this category ({blog.title}) and it will also remove all posts related to this categorys
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <DeleteBtn2 postId={blog.id}/>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
+        </Card>
+        ))}
+        </>
     )
 }

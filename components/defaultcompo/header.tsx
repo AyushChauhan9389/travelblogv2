@@ -97,6 +97,7 @@ export default async function Header() {
                     <Button variant="outline">Create Your Own Post</Button>
                 </Link>
                 <div className="w-fit">
+                    <ModeToggle/>
                 </div>
             </div>
             <Sheet>

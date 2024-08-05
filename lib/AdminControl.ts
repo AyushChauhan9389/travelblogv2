@@ -28,3 +28,14 @@ export async function Allowedtoedit({autherId}: {autherId: number}){
         return false
     }
 }
+export async function Allowedtodelete({autherId}: {autherId: number}){
+    const userid = await getUserIdAction()
+    const isadmin =  await adminControl()
+    if (isadmin){
+        return true
+    }else if (userid === autherId) {
+        return true
+    }else {
+        return false
+    }
+}

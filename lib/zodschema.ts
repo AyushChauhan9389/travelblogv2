@@ -39,3 +39,7 @@ export const publisherschema = z.object({
 export const deletebtn = z.object({
     postId: z.number()
 })
+
+export const deletecategory = z.object({
+    categoryId: z.number()
+})
