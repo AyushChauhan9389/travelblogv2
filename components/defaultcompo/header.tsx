@@ -3,11 +3,12 @@ import { NavigationMenu, NavigationMenuList, NavigationMenuLink, NavigationMenuI
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
-import {ChevronRightIcon, MenuIcon, MountainIcon} from "lucide-react";
-import {Separator} from "@/components/ui/separator";
-import {db} from "@/app/db/db";
-import {categories, users} from "@/app/db/schema";
-import {SearchClient} from "@/components/defaultcompo/SearchClient";
+import { ChevronRightIcon, MenuIcon, MountainIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { db } from "@/app/db/db";
+import { categories, users } from "@/app/db/schema";
+import { SearchClient } from "@/components/defaultcompo/SearchClient";
+import { ModeToggle } from "../component/Toggle"
 
 export default async function Header() {
     const cats = await db.select().from(categories).offset(1).limit(6)
@@ -17,7 +18,7 @@ export default async function Header() {
             className="sticky top-0 flex w-full shrink-0 justify-between items-center px-4 py-3 md:px-6 border-b z-50 bg-background">
             <div className="flex flex-row ">
                 <Link href="#" className="mr-6 flex items-center" prefetch={false}>
-                    <MountainIcon className="h-6 w-6"/>
+                    <MountainIcon className="h-6 w-6" />
                     <span className="sr-only">Acme Inc</span>
                 </Link>
                 <NavigationMenu className="hidden lg:flex">
@@ -91,21 +92,23 @@ export default async function Header() {
                 </NavigationMenu>
             </div>
             <div className="flex flex-row gap-4">
-                <SearchClient/>
+                <SearchClient />
                 <Link href="/dashboard" className="ml-auto">
                     <Button variant="outline">Create Your Own Post</Button>
                 </Link>
+                <div className="w-fit">
+                </div>
             </div>
             <Sheet>
-            <SheetTrigger asChild>
+                <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="lg:hidden">
-                        <MenuIcon className="h-6 w-6"/>
+                        <MenuIcon className="h-6 w-6" />
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left">
                     <Link href="#" className="flex items-center justify-center" prefetch={false}>
-                        <MountainIcon className="h-6 w-6"/>
+                        <MountainIcon className="h-6 w-6" />
                         <span className="sr-only">Acme Inc</span>
                     </Link>
                     <div className="grid gap-2 py-6">
@@ -115,13 +118,13 @@ export default async function Header() {
                         <Collapsible className="grid gap-4">
                             <CollapsibleTrigger
                                 className="flex w-full items-center text-lg font-semibold [&[data-state=open]>svg]:rotate-90">
-                                Categories <ChevronRightIcon className="ml-auto h-5 w-5 transition-all"/>
+                                Categories <ChevronRightIcon className="ml-auto h-5 w-5 transition-all" />
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <div className="-mx-6 grid gap-6 bg-muted p-6">
                                     {cats.map((cat, index) => (
                                         <Link href={`/category/${cat.id}`} className="group grid h-auto w-full justify-start gap-1"
-                                              prefetch={false} key={index}>
+                                            prefetch={false} key={index}>
                                             <div
                                                 className="text-sm font-medium leading-none group-hover:underline">{cat.name}
                                             </div>
@@ -136,13 +139,13 @@ export default async function Header() {
                         <Collapsible className="grid gap-4 mt-3">
                             <CollapsibleTrigger
                                 className="flex w-full items-center text-lg font-semibold [&[data-state=open]>svg]:rotate-90">
-                                Author <ChevronRightIcon className="ml-auto h-5 w-5 transition-all"/>
+                                Author <ChevronRightIcon className="ml-auto h-5 w-5 transition-all" />
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <div className="-mx-6 grid gap-6 bg-muted p-6">
                                     {author.map((cat, index) => (
                                         <Link href={`/author/${cat.id}`} className="group grid h-auto w-full justify-start gap-1"
-                                              prefetch={false} key={index}>
+                                            prefetch={false} key={index}>
                                             <div className="text-sm font-medium leading-none group-hover:underline">
                                                 {cat.username}
                                             </div>

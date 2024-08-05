@@ -10,6 +10,7 @@ export function SearchClient(){
     return(
         <Input
             value={search}
+            onChange={(e) => setSearch(e.target.value)}
             onClick={() => router.push('/search')}
             placeholder="Search blog posts..."
             className="w-full max-w-md rounded-lg bg-muted px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-gray-800 dark:text-gray-200"
