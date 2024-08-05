@@ -53,7 +53,7 @@ export const createBlogAction = actionClient.schema(blogschema).action(async ({ 
                     ispublished: true,
                     description: description
                 })
-                redirect(`/dashboard`)
+                revalidatePath(`/dashboard`)
                 return {
                     success: 'Added Successfully',
                 };
