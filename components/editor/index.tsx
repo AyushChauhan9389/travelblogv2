@@ -7,6 +7,7 @@ import {
   EditorCommandItem,
   EditorCommandEmpty,
   EditorContent,
+  type EditorInstance,
   type JSONContent,
   EditorCommandList,
   EditorBubble
@@ -37,7 +38,7 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
   const [openNode, setOpenNode] = useState(false)
   const [openColor, setOpenColor] = useState(false)
   const [openLink, setOpenLink] = useState(false)
-
+  
   return (
     <EditorRoot>
       <EditorContent
@@ -100,7 +101,6 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
           <Separator orientation='vertical' />
           <TextButtons />
           <Separator orientation='vertical' />
-          <ColorSelector open={openColor} onOpenChange={setOpenColor} />
         </EditorBubble>
       </EditorContent>
     </EditorRoot>
