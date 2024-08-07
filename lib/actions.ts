@@ -1,6 +1,6 @@
 "use server";
 
-import {blogschema, commentschema, deletebtn, deletecategory, publisherschema, saveblogschema, TextGeneration} from "@/lib/zodschema";
+import {blogschema, category, commentschema, deletebtn, deletecategory, publisherschema, saveblogschema, TextGeneration} from "@/lib/zodschema";
 import {actionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
 import {currentUser} from "@clerk/nextjs/server";
@@ -170,3 +170,22 @@ export const TextGenerationAction = actionClient.schema(TextGeneration).action(a
         return { failure: "Failed" };
     }
 });
+
+export const CategoryMaker = actionClient.schema(category).action(async ({ parsedInput: { name, description } }) => {
+    try{
+        const userid = await getUserIdAction()
+            if(userid){
+                await db.insert(categories).values({
+                    name: name,
+                    description: description
+                })
+                revalidatePath(`/admin`)
+                return {
+                    success: 'Added Successfully',
+                };
+            }else{
+                return { failure: "Incorrect Data" };
+            }
+    }catch(error : any){
+        return { failure: "Failed" };    
+    }});

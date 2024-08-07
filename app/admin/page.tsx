@@ -22,7 +22,6 @@ export default async function AdminPage(){
         <>
         <div className="my-4 text-2xl font-medium flex flex-row justify-between">
         Posts
-        <Button variant="outline" className="ml-4">Add Category</Button>
         </div>
         {totalblogs.map((blog, index) => (
             <Card key={index} className="mb-4 group flex flex-row justify-between items-center h-14 px-6 shadow-md capitalize hover:scale-[1.001] transition">

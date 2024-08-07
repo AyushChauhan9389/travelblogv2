@@ -17,13 +17,14 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import DeleteBtn3 from "@/components/defaultcompo/DeleteCat";
+import AddForm from "@/components/defaultcompo/AddForm";
 export default async function CategoryPage() {
     const categorydata = await (await db.select().from(categories))
     return (
         <>
         <div className="my-4 text-2xl font-medium flex flex-row justify-between">
         Categories
-        <Button variant="outline" className="ml-4">Add Category</Button>
+        <AddForm />
         </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {categorydata.map((category, index) => (

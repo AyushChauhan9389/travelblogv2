@@ -47,3 +47,8 @@ export const deletecategory = z.object({
 export const TextGeneration = z.object({
     text: z.string()
 })
+
+export const category = z.object({
+    name: z.string(),
+    description: z.string()
+})
