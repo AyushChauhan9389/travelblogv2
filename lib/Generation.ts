@@ -22,7 +22,7 @@ export default async function Generation(text:string) {
                 }
             ],
           });
-        return result.content[0].text
+        return result
     } else {
         return error("Error")
     }
