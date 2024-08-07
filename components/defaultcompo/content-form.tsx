@@ -21,6 +21,7 @@ import {blogschema} from '@/lib/zodschema'
 import {uploadImage} from "@/lib/uploader";
 import {useAction} from "next-safe-action/hooks";
 import {Textarea} from "@/components/ui/textarea";
+import { redirect } from 'next/navigation'
 
 export const defaultValue = {
     type: 'doc',
@@ -62,6 +63,8 @@ export default function ContentForm({categories = []}: TravelCategoriesProps) {
             }
             if (data?.success){
                 toast.success(data.success)
+                redirect('/dashboard')
+                
             }
         },
         onError: (error) => {

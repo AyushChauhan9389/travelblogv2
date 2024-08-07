@@ -36,9 +36,6 @@ export default async function Addblog() {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <Link href="/dashboard/add">
-                    <Button className="mt-4">Add Blog</Button>
-                </Link>
             </div>
             <div className="mt-4">
                 <Card className="w-full">

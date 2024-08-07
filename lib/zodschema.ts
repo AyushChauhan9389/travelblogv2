@@ -43,3 +43,7 @@ export const deletebtn = z.object({
 export const deletecategory = z.object({
     categoryId: z.number()
 })
+
+export const TextGeneration = z.object({
+    text: z.string()
+})

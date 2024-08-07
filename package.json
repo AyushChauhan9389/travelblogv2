@@ -12,6 +12,7 @@
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@anthropic-ai/vertex-sdk": "^0.4.1",
     "@clerk/nextjs": "^5.2.8",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -43,6 +44,7 @@
     "embla-carousel-react": "^8.1.8",
     "framer-motion": "^11.3.19",
     "icons-react": "^3.7.1",
+    "install": "^0.13.0",
     "lucide-react": "^0.416.0",
     "next": "14.2.5",
     "next-safe-action": "^7.4.3",

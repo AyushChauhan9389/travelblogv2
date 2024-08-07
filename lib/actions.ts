@@ -1,6 +1,6 @@
 "use server";
 
-import {blogschema, commentschema, deletebtn, deletecategory, publisherschema, saveblogschema} from "@/lib/zodschema";
+import {blogschema, commentschema, deletebtn, deletecategory, publisherschema, saveblogschema, TextGeneration} from "@/lib/zodschema";
 import {actionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
 import {currentUser} from "@clerk/nextjs/server";
@@ -9,6 +9,7 @@ import {db} from "@/app/db/db";
 import {categories, comments, posts, users} from "@/app/db/schema";
 import adminControl, { Allowedtodelete } from "./AdminControl";
 import { redirect } from "next/navigation";
+import Generation from "./Generation";
 
 
 export async function getUserIdAction() {
@@ -155,3 +156,17 @@ export const deletecategoryAction = actionClient.schema(deletecategory).action(a
         return { failure: "Incorrect credentials" };
     }
 })
+
+
+export const TextGenerationAction = actionClient.schema(TextGeneration).action(async ({ parsedInput: { text } }) => {
+    try{
+        const result =  await Generation(text);
+        console.log(result)
+        return {
+            result: result,
+            success: 'Generated Successfully',
+        };
+    }catch (error: any) {
+        return { failure: "Failed" };
+    }
+});
