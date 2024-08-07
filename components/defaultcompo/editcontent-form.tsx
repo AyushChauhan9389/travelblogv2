@@ -1,16 +1,16 @@
 'use client'
 
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import Editor from '@/components/editor'
 import editor from '@/components/editor'
-import {Button} from '@/components/ui/button'
-import {Input} from '@/components/ui/input'
-import {createBlogAction, saveBlogAction} from '@/lib/actions'
-import {toast} from 'sonner'
-import {uploadImage} from "@/lib/uploader";
-import {useAction} from "next-safe-action/hooks";
-import {generateJSON} from "@tiptap/html";
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { createBlogAction, saveBlogAction } from '@/lib/actions'
+import { toast } from 'sonner'
+import { uploadImage } from "@/lib/uploader";
+import { useAction } from "next-safe-action/hooks";
+import { generateJSON } from "@tiptap/html";
 import {
     AIHighlight,
     HorizontalRule,
@@ -22,10 +22,10 @@ import {
     TiptapLink,
     UpdatedImage
 } from "novel/extensions";
-import {JSONContent} from "novel";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Switch} from "@/components/ui/switch";
-import {Label} from "@/components/ui/label";
+import { JSONContent } from "novel";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
     Select,
     SelectContent,
@@ -35,8 +35,11 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import {Textarea} from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import * as React from "react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { AlertDialogHeader } from '../ui/alert-dialog'
+import Generation from '@/lib/Generation'
 
 export const defaultValue = {
     type: 'doc',
@@ -65,30 +68,31 @@ type editor = {
 interface TravelCategory {
     id: number;
     name: string;
-    description: string | null ;
+    description: string | null;
 }
 
 type TravelCategories = TravelCategory[];
 
 interface TravelCategoriesProps {
-    categories?: TravelCategories;  // Make the prop optional
+    categories?: TravelCategories;
 }
-export default function EditContentForm({contentset, slugset, titleset, idset,categories = [],discriptionset, categoryset}: editor) {
+export default function EditContentForm({ contentset, slugset, titleset, idset, categories = [], discriptionset, categoryset }: editor) {
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')
     const [json, setJson] = useState<JSONContent>()
     const [content, setContent] = useState<string>('')
     const [image, setImage] = useState<File>()
-    const [preview, setPreview] = useState(false )
+    const [prop, setProp] = useState('')
+    const [preview, setPreview] = useState(false)
 
     const [description, setDescription] = useState('')
     const [category, setCategory] = useState<number>(1)
-    const {execute, result, status} = useAction(saveBlogAction,{
-        onSuccess: ({data}) => {
-            if (data?.failure){
+    const { execute, result, status } = useAction(saveBlogAction, {
+        onSuccess: ({ data }) => {
+            if (data?.failure) {
                 toast.error(data.failure)
             }
-            if (data?.success){
+            if (data?.success) {
                 toast.success(data.success)
             }
         },
@@ -96,7 +100,7 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
             toast.error("failed")
         }
     })
-    function datasetter(){
+    function datasetter() {
 
         return generateJSON(contentset, [
             TiptapImage,
@@ -127,6 +131,10 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
         setSlug(name)
     }, [title])
 
+    async function generatecode() {
+
+        
+    }
 
     async function handleSubmit() {
 
@@ -134,10 +142,10 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
         const file = image
         if (!file) {
             toast.error('Image is required')
-            execute({title, slug, content, blogid: idset, description,categoryid: category})
-        }else {
+            execute({ title, slug, content, blogid: idset, description, categoryid: category })
+        } else {
             const headerimageurl = await uploadImage(file)
-            execute({title, slug, content, blogid: idset , headerimageurl, description, categoryid: category})
+            execute({ title, slug, content, blogid: idset, headerimageurl, description, categoryid: category })
         }
 
 
@@ -155,7 +163,7 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
                                 (checked) => {
                                     setPreview(checked)
                                 }
-                            } id="airplane-mode"/>
+                            } id="airplane-mode" />
                             <Label htmlFor="airplane-mode" className="text-xl">Preview</Label>
                         </div>
                     </CardTitle>
@@ -194,14 +202,14 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
                                 />
                                 <Select onValueChange={e => setCategory(Number(e))} value={String(category)}>
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select a Category"/>
+                                        <SelectValue placeholder="Select a Category" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Categories</SelectLabel>
                                             {categories.map((category, index) => (
                                                 <SelectItem key={index} value={String(category.id)}
-                                                            className="capitalize">
+                                                    className="capitalize">
                                                     {category.name}
                                                 </SelectItem>
                                             ))}
@@ -218,7 +226,41 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
 
                         </div>
 
-                        <Editor initialValue={datasetter()} onChange={setContent}/>
+                        <div>
+                            <div className="w-full flex justify-end">
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">Generate</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <AlertDialogHeader>
+                                            <DialogTitle>Generate</DialogTitle>
+                                            <DialogDescription>
+                                                Please Enter Your Prompt
+                                            </DialogDescription>
+                                        </AlertDialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            <div className="flex flex-col gap-4">
+                                                <Label htmlFor="username" className="text-right">
+                                                    Title For Blog
+                                                </Label>
+                                                <Input
+                                                    id="prompt"
+                                                    value={prop}
+                                                    onChange={e => setProp(e.target.value)}
+                                                    className="col-span-3"
+                                                />
+                                            </div>
+                                        </div>
+                                        <DialogFooter>
+                                            <Button type="submit" >Save changes</Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                            <Editor initialValue={datasetter()} onChange={setContent} />
+                        </div>
+
                         <Button onClick={handleSubmit} disabled={status === 'executing'}>
                             {status === 'executing' ? 'Saving...' : 'Save'}
                         </Button>
@@ -248,7 +290,7 @@ export default function EditContentForm({contentset, slugset, titleset, idset,ca
 
                         <CardContent>
 
-                            <div dangerouslySetInnerHTML={{__html: content}} className="prose mt-4"></div>
+                            <div dangerouslySetInnerHTML={{ __html: content }} className="prose mt-4"></div>
                         </CardContent>
                     </Card>
                 </div>}

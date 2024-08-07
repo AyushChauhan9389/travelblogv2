@@ -14,7 +14,7 @@ export default async function page() {
                 </h1>
                 <div className="flex flex-col gap-3">
                 {authors.map((author, index) => (
-                    <Card className="flex justify-between py-2 px-2 w-full hover:scale-[1.01] transition items-center" key={index}>
+                    <Card className="flex justify-between py-2 px-2 w-full hover:scale-[1.005] transition items-center" key={index}>
                     {author.username}
                     <Link href={`/blog/${author.id}`}>
                     <Button>
