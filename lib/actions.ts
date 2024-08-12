@@ -9,7 +9,6 @@ import {db} from "@/app/db/db";
 import {categories, comments, posts, users} from "@/app/db/schema";
 import adminControl, { Allowedtodelete } from "./AdminControl";
 import { redirect } from "next/navigation";
-import Generation from "./Generation";
 
 
 export async function getUserIdAction() {
@@ -157,19 +156,6 @@ export const deletecategoryAction = actionClient.schema(deletecategory).action(a
     }
 })
 
-
-export const TextGenerationAction = actionClient.schema(TextGeneration).action(async ({ parsedInput: { text } }) => {
-    try{
-        const result =  await Generation(text);
-        console.log(result)
-        return {
-            result: result,
-            success: 'Generated Successfully',
-        };
-    }catch (error: any) {
-        return { failure: "Failed" };
-    }
-});
 
 export const CategoryMaker = actionClient.schema(category).action(async ({ parsedInput: { name, description } }) => {
     try{
